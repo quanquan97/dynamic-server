@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>注册</title>
+</head>
+<body>
+  <form id="registerForm">
+    <div>
+      <label>用户名 <input type="text" name="name"></label>
+    </div>
+    <div>
+      <label>密码 <input type="password" name="password"></label>
+    </div>
+    <div>
+      <button type="submit">注册</button>
+    </div>
+  </form> 
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+    //   使用jq监听表单的submit事件，记得先要阻止表单的默认事件
+    const $form = $('#registerForm')
+    $form.on('submit', (e)=>{
+      e.preventDefault()
+      //要获取到用户名密码
+      const name = $form.find('input[name=name]').val()
+      const password = $form.find('input[name=password]').val()
+      console.log(name, password)
+      //现在要把这些信息提交一下---发ajax请求，用jq的ajax，上传json到服务器，这时候得到一个404，因为服务器里面根本就没有写这个路由   注册成功之后跳转到登陆页面
+      $.ajax({
+        method: 'POST',
+        url: '/register',
+        contentType: 'text/json; charset=UTF-8',
+        data: JSON.stringify({name, password})
+      }).then(()=>{
+        alert('注册成功')  // then 后面第一个函数是成功，跳转到登录页 第二个函数是失败
+        location.href = '/sign_in.html'
+      }, ()=>{})
+    })
+  </script>
+</body>
+</html>
